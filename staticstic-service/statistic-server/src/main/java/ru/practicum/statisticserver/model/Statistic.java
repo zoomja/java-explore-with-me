@@ -10,9 +10,6 @@ import java.time.LocalDateTime;
 @Table(name = "statistic")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Statistic {
 
     @Id

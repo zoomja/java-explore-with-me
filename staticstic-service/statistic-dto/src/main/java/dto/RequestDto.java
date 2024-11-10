@@ -15,13 +15,10 @@ import java.time.LocalDateTime;
 @Setter
 public class RequestDto {
 
-    @NotNull
+    private Long id;
     private String app;
-    @NotNull
     private String uri;
-    @NotNull
     private String ip;
-    @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
 }
