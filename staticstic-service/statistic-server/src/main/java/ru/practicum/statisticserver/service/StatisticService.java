@@ -27,7 +27,7 @@ public class StatisticService {
     }
 
     public List<ResponseDto> getStatistics(LocalDateTime startTime, LocalDateTime endTime, List<String> uris, boolean unique) {
-        if (uris == null || uris.isEmpty()) {
+        if (uris.isEmpty()) {
             return statisticRepository.findStatisticByTimeRange(startTime, endTime);
         }
         if (unique) return statisticRepository.findStatisticByTimeAndUriUnique(startTime, endTime, uris);
