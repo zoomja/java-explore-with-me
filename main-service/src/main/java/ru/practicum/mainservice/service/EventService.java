@@ -176,8 +176,7 @@ public class EventService {
     }
 
     public EventFullDto getEvent(Integer eventId, String ip) {
-
-        Event event = eventRepository.findByIdAndStateIn(eventId, List.of(State.PUBLISHED)).orElseThrow(() -> new NotFoundException("Event не найден")) ;
+        Event event = eventRepository.findByIdAndStateIn(eventId, List.of(State.PUBLISHED)).orElseThrow(() -> new NotFoundException("Event не найден"));
         if (event.getViews() == null) event.setViews(1);
         else event.setViews(event.getViews() + 1);
         addNewHit("/events/" + eventId, ip);

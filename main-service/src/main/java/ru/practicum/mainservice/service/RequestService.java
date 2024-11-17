@@ -27,8 +27,7 @@ public class RequestService {
     private final UserService userService;
     private final EventRepository eventRepository;
 
-    public ParticipationRequestDto getRequests(Integer userId, Integer eventId){
-
+    public ParticipationRequestDto getRequests(Integer userId, Integer eventId) {
         Request request = requestRepository.findRequestByRequesterIdAndEventId(userId, eventId);
         User user = userService.getUserById(userId);
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Event not found"));
@@ -36,16 +35,14 @@ public class RequestService {
         participationRequestDto.setEvent(event.getId());
         participationRequestDto.setRequester(user.getId());
         participationRequestDto.setStatus(request.getStatus());
-
         return participationRequestDto;
     }
 
-    public EventRequestStatusUpdateResult updateRequests(Integer userId, Integer eventId, EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest){
-
+    public EventRequestStatusUpdateResult updateRequests(Integer userId, Integer eventId, EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
         Event event = eventRepository.findByIdAndInitiator_Id(eventId, userId);
         List<Request> requests = requestRepository.findAllById(eventRequestStatusUpdateRequest.getRequestIds());
         EventRequestStatusUpdateResult eventRequestStatusUpdateResult = new EventRequestStatusUpdateResult();
-        if (eventRequestStatusUpdateRequest.getStatus() == State.CONFIRMED){
+        if (eventRequestStatusUpdateRequest.getStatus() == State.CONFIRMED) {
             List<ParticipationRequestDto> participationRequestDtos = setRequestStatus(requests, State.CONFIRMED);
             participationRequestDtos.forEach(p -> p.setRequester(userId));
             participationRequestDtos.forEach(p -> p.setEvent(eventId));
@@ -65,7 +62,7 @@ public class RequestService {
         return eventRequestStatusUpdateResult;
     }
 
-    public List<ParticipationRequestDto> getRequests(Integer userId){
+    public List<ParticipationRequestDto> getRequests(Integer userId) {
         userService.getUserById(userId);
         List<Request> requests = requestRepository.findAllByRequester_Id(userId);
         return requestMapper.toParticipationRequestDtoList(requests);
@@ -81,7 +78,7 @@ public class RequestService {
             throw new ConflictException("The participant limit has been reached");
         }
         if (event.getInitiator().getId().equals(userId) || event.getState() == State.PENDING ||
-        event.getState() == State.CANCELLED) {
+                event.getState() == State.CANCELLED) {
             throw new ConflictException("Нельзя участвовать в своем или неопубликованном событии");
         }
         User requester = userService.getUserById(userId);
