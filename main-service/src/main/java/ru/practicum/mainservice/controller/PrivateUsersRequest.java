@@ -13,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PrivateUsersRequest {
 
-    RequestService requestService;
+    private final RequestService requestService;
 
     @GetMapping
     public List<ParticipationRequestDto> getRequests(@PathVariable Integer userId) {

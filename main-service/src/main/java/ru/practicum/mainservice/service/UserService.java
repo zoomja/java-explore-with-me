@@ -1,14 +1,15 @@
 package ru.practicum.mainservice.service;
 
-import ru.practicum.mainservice.dto.user.UserDto;
-import ru.practicum.mainservice.mapper.UserMapper;
-import ru.practicum.mainservice.model.User;
-import ru.practicum.mainservice.repository.UserRepository;
-import ru.practicum.mainservice.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
+import ru.practicum.mainservice.dto.user.NewUserRequest;
+import ru.practicum.mainservice.dto.user.UserDto;
+import ru.practicum.mainservice.exception.ConflictException;
+import ru.practicum.mainservice.exception.NotFoundException;
+import ru.practicum.mainservice.mapper.UserMapper;
+import ru.practicum.mainservice.model.User;
+import ru.practicum.mainservice.repository.UserRepository;
 
 import java.util.List;
 
@@ -27,10 +28,14 @@ public class UserService {
         return userMapper.toUserDtos(userRepository.findAllByIdIn(ids, PageRequest.of(from / size, size)).getContent());
     }
 
-    public UserDto createUser(UserDto userDto) {
-        User user = userMapper.toUser(userDto);
-        userRepository.save(user);
-        return userMapper.toUserDto(user);
+    public UserDto createUser(NewUserRequest newUserRequest) {
+        try {
+            User user = userMapper.toUserRequest(newUserRequest);
+            userRepository.save(user);
+            return userMapper.toUserDto(user);
+        } catch (Exception e) {
+            throw new ConflictException("Такой email уже используется");
+        }
     }
 
     public void deleteUser(Integer id) {

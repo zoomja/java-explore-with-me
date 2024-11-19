@@ -1,9 +1,7 @@
 package ru.practicum.mainservice.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 import ru.practicum.mainservice.model.enums.State;
 
 import java.time.LocalDateTime;
@@ -12,9 +10,11 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ParticipationRequestDto {
 
     private Integer id;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime created;
     private Integer event;
     private Integer requester;

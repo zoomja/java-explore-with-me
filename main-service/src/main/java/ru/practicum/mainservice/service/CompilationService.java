@@ -27,7 +27,8 @@ public class CompilationService {
 
     public List<CompilationDto> getCompilations(Boolean pinned, Integer from, Integer size) {
         List<Compilation> compilations;
-        if (!pinned) {
+        System.out.println();
+        if (pinned == null) {
             compilations = compilationRepository.findAll(PageRequest.of(from / size, size)).getContent();
         } else {
             compilations = compilationRepository

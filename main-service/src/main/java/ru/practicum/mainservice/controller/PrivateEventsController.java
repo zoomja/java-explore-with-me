@@ -1,5 +1,7 @@
 package ru.practicum.mainservice.controller;
 
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import ru.practicum.mainservice.dto.request.EventRequestStatusUpdateRequest;
 import ru.practicum.mainservice.dto.request.ParticipationRequestDto;
 import ru.practicum.mainservice.dto.request.EventRequestStatusUpdateResult;
@@ -24,7 +26,8 @@ public class PrivateEventsController {
     private final RequestService requestService;
 
     @PostMapping
-    public EventFullDto createEvent(@PathVariable Integer userId, @RequestBody NewEventDto newEventDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public EventFullDto createEvent(@PathVariable Integer userId, @Valid @RequestBody NewEventDto newEventDto) {
         return eventService.createEvent(userId, newEventDto);
     }
 
@@ -42,12 +45,12 @@ public class PrivateEventsController {
     }
 
     @PatchMapping("/{eventId}")
-    public EventFullDto updateEvent(@PathVariable Integer userId, @PathVariable Integer eventId, @RequestBody UpdateEventUserRequest updateEventUserRequest) {
+    public EventFullDto updateEvent(@PathVariable Integer userId, @PathVariable Integer eventId, @Valid @RequestBody UpdateEventUserRequest updateEventUserRequest) {
         return eventService.updateEvent(userId, eventId, updateEventUserRequest);
     }
 
     @GetMapping("/{eventId}/requests")
-    public ParticipationRequestDto getRequests(@PathVariable Integer userId, @PathVariable Integer eventId) {
+    public List<ParticipationRequestDto> getRequests(@PathVariable Integer userId, @PathVariable Integer eventId) {
         return requestService.getRequests(userId, eventId);
 
     }

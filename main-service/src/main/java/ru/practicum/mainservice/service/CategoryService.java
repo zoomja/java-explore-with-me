@@ -1,15 +1,15 @@
 package ru.practicum.mainservice.service;
 
-import ru.practicum.mainservice.mapper.CategoryMapper;
-import ru.practicum.mainservice.dto.category.CategoryDto;
-import ru.practicum.mainservice.dto.category.NewCategoryDto;
-import ru.practicum.mainservice.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import ru.practicum.mainservice.model.Category;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import ru.practicum.mainservice.dto.category.CategoryDto;
+import ru.practicum.mainservice.dto.category.NewCategoryDto;
+import ru.practicum.mainservice.exception.ConflictException;
+import ru.practicum.mainservice.exception.NotFoundException;
+import ru.practicum.mainservice.mapper.CategoryMapper;
+import ru.practicum.mainservice.model.Category;
 import ru.practicum.mainservice.repository.CategoryRepository;
-
 
 import java.util.List;
 
@@ -20,20 +20,32 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
 
     public CategoryDto addCategory(NewCategoryDto newCategoryDto) {
-        Category category = categoryMapper.toCategory(newCategoryDto);
-        categoryRepository.save(category);
-        return categoryMapper.toCategoryDto(category);
+        try {
+            Category category = categoryMapper.toCategory(newCategoryDto);
+            categoryRepository.save(category);
+            return categoryMapper.toCategoryDto(category);
+        } catch (Exception e) {
+            throw new ConflictException(e.getMessage());
+        }
     }
 
     public void deleteCategory(Integer categoryId) {
-        categoryRepository.deleteById(categoryId);
+        try {
+            categoryRepository.deleteById(categoryId);
+        } catch (Exception e) {
+            throw new ConflictException(e.getMessage());
+        }
     }
 
     public CategoryDto updateCategory(Integer categoryId, NewCategoryDto newCategoryDto) {
-        Category category = findCategoryById(categoryId);
-        category.setName(newCategoryDto.getName());
-        categoryRepository.save(category);
-        return categoryMapper.toCategoryDto(category);
+        try {
+            Category category = findCategoryById(categoryId);
+            category.setName(newCategoryDto.getName());
+            categoryRepository.save(category);
+            return categoryMapper.toCategoryDto(category);
+        } catch (Exception e) {
+            throw new ConflictException(e.getMessage());
+        }
     }
 
     public List<CategoryDto> getAllCategories(Integer from, Integer size) {

@@ -18,7 +18,6 @@ public class Statistic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
     @Column(name = "app")
     private String app;
     @Column(name = "uri")

@@ -10,11 +10,11 @@ import ru.practicum.mainservice.dto.compilation.UpdateCompilationRequest;
 import ru.practicum.mainservice.service.CompilationService;
 
 @RestController
-@RequestMapping("/admin/compilation")
+@RequestMapping("/admin/compilations")
 @AllArgsConstructor
 public class AdminCompilationController {
 
-    CompilationService compilationService;
+    private final CompilationService compilationService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

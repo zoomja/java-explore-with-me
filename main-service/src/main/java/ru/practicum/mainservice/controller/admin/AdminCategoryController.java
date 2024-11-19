@@ -1,5 +1,7 @@
 package ru.practicum.mainservice.controller.admin;
 
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import ru.practicum.mainservice.service.CategoryService;
 import ru.practicum.mainservice.dto.category.CategoryDto;
 import ru.practicum.mainservice.dto.category.NewCategoryDto;
@@ -15,17 +17,19 @@ public class AdminCategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public CategoryDto addCategory(@RequestBody NewCategoryDto newCategoryDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public CategoryDto addCategory(@RequestBody @Valid NewCategoryDto newCategoryDto) {
         return categoryService.addCategory(newCategoryDto);
     }
 
     @DeleteMapping("/{catId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable Integer catId) {
         categoryService.deleteCategory(catId);
     }
 
     @PatchMapping("/{catId}")
-    public CategoryDto updateCategory(@PathVariable Integer catId, @RequestBody NewCategoryDto newCategoryDto) {
+    public CategoryDto updateCategory(@PathVariable Integer catId, @RequestBody @Valid NewCategoryDto newCategoryDto) {
         return categoryService.updateCategory(catId, newCategoryDto);
     }
 }

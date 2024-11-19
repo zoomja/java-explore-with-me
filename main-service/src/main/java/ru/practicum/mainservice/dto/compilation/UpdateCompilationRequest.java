@@ -1,5 +1,6 @@
 package ru.practicum.mainservice.dto.compilation;
 
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,6 @@ public class UpdateCompilationRequest {
 
     List<Integer> events;
     Boolean pinned;
+    @Size(max = 50)
     String title;
 }

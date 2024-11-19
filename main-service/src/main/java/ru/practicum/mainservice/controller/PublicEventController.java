@@ -36,6 +36,6 @@ public class PublicEventController {
 
     @GetMapping("/{eventId}")
     public EventFullDto getEvent(@PathVariable Integer eventId, HttpServletRequest request) {
-        return eventService.getEvent(eventId, request.getRemoteAddr());
+        return eventService.getPublicEvent(eventId, request.getRemoteAddr());
     }
 }

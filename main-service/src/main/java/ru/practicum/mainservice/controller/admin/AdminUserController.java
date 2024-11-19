@@ -1,5 +1,6 @@
 package ru.practicum.mainservice.controller.admin;
 
+import ru.practicum.mainservice.dto.user.NewUserRequest;
 import ru.practicum.mainservice.dto.user.UserDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +29,8 @@ public class AdminUserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
+    public UserDto createUser(@Valid @RequestBody NewUserRequest newUserRequest) {
+        return userService.createUser(newUserRequest);
     }
 
     @DeleteMapping("/{userId}")
