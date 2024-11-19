@@ -11,7 +11,6 @@ public class StatsClient {
 
     public void saveStatistic(RequestDto requestDto) {
         HttpEntity<RequestDto> request = new HttpEntity<>(requestDto);
-//        restTemplate.postForObject("http://localhost:9090/hit", request, String.class);
         restTemplate.postForObject("http://stats-server:9090/hit", request, String.class);
     }
 }

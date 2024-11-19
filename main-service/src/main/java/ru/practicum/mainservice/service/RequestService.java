@@ -84,13 +84,10 @@ public class RequestService {
                 event.getState() == State.CANCELED) {
             throw new ConflictException("Нельзя участвовать в своем или неопубликованном событии");
         }
-
-//        if (!event.getRequestModeration()) {
         if (event.getConfirmedRequests() != null && event.getParticipantLimit() != 0
                 && event.getConfirmedRequests().equals(event.getParticipantLimit())) {
             throw new ConflictException("The participant limit has been reached");
         }
-//        }
 
         User requester = userService.getUserById(userId);
         Request request = Request.builder()

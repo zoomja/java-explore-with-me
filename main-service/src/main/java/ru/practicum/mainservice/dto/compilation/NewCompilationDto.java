@@ -15,10 +15,10 @@ import java.util.List;
 @NoArgsConstructor
 public class NewCompilationDto {
 
-    List<Integer> events = List.of();
-    Boolean pinned = false;
+    private List<Integer> events = List.of();
+    private Boolean pinned = false;
     @NotBlank
     @Size(min = 10, max = 50)
-    String title;
+    private String title;
 
 }
