@@ -1,7 +1,6 @@
 package ru.practicum.statisticserver.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -10,12 +9,14 @@ import java.time.LocalDateTime;
 @Table(name = "statistic")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Statistic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
     @Column(name = "app")
     private String app;
     @Column(name = "uri")

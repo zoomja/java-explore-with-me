@@ -26,7 +26,7 @@ public interface StatisticRepository extends JpaRepository<Statistic, Long> {
             SELECT new dto.ResponseDto(s.app, s.uri, COUNT(distinct s.ip))
             FROM Statistic s
             WHERE s.timestamp BETWEEN :startTime AND :endTime
-            AND s.uri IN (:uri)
+            AND s.uri IN :uri
             GROUP BY s.app, s.uri
             ORDER BY COUNT(distinct s.ip) DESC
     """)
@@ -39,7 +39,7 @@ public interface StatisticRepository extends JpaRepository<Statistic, Long> {
             SELECT new dto.ResponseDto(s.app, s.uri, COUNT(s.ip))
             FROM Statistic s
             WHERE s.timestamp BETWEEN :startTime AND :endTime
-            AND s.uri IN (:uri)
+            AND s.uri IN :uri
             GROUP BY s.app, s.uri
             ORDER BY COUNT(s.ip) DESC
     """)
