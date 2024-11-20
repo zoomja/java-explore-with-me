@@ -56,7 +56,11 @@ public class EventService {
         event.setCategory(category);
         event.setLocation(location);
         event.setState(State.PENDING);
+        event.setCreatedOn(LocalDateTime.now());
         event.setConfirmedRequests(0);
+        if (newEventDto.getParticipantLimit() == null) event.setParticipantLimit(0);
+        if (newEventDto.getPaid() == null) event.setPaid(false);
+        if (newEventDto.getRequestModeration() == null) event.setRequestModeration(true);
 
         eventRepository.save(event);
         return eventMapper.toEventFullDto(event);
@@ -80,7 +84,7 @@ public class EventService {
                 throw new CheckTimeException("Неправильно указана дата");
             }
         }
-        Event event = getEventById(eventId);
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Эвент не найден"));
         if (event.getState().equals(State.PUBLISHED)) {
             throw new ForbiddenException("Нельзя изменть эвент в статусе PUBLISHED");
         }
@@ -123,7 +127,7 @@ public class EventService {
         }
 
         if (text != null && paid != null && sort != null && categories != null) {
-            events = eventRepository.findAllByCriteria(
+            events = eventRepository.findAllByAnnotationContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndCategory_IdInAndPaidIsAndEventDateBeforeAndEventDateAfter(
                             text, text, categories, paid, end, start, PageRequest.of(from / size, size))
                     .getContent();
         } else {
@@ -163,7 +167,7 @@ public class EventService {
     }
 
     public EventFullDto updateEvent(Integer eventId, UpdateEventAdminRequest updateEventAdminRequest) {
-        Event event = getEventById(eventId);
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Эвент не найден"));
         if (event.getState().equals(State.CANCELED) || event.getState().equals(State.PUBLISHED)) {
             throw new ForbiddenException("Нельзя изменть эвент в статусе CANCELLED и PUBLISHED");
         }
@@ -187,10 +191,6 @@ public class EventService {
         return eventMapper.toEventFullDto(event);
     }
 
-    public Event getEventById(Integer eventId) {
-        return eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Event не найден"));
-    }
-
     private void addNewHit(String uri, String ip) {
         RequestDto requestDto = RequestDto.builder()
                 .app(SERVICE_NAME)
@@ -199,6 +199,10 @@ public class EventService {
                 .ip(ip)
                 .build();
         statsClient.saveStatistic(requestDto);
+    }
+
+    public Event getEventById(Integer eventId) {
+        return eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Event не найден"));
     }
 
     private void checkEventTime(LocalDateTime eventTime) {

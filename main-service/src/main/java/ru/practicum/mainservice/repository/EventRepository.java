@@ -20,19 +20,13 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
 
     Page<Event> findAllByEventDateBeforeAndEventDateAfter(LocalDateTime start, LocalDateTime end, Pageable pageable);
 
-    @Query("SELECT e FROM Event e " +
-            "WHERE LOWER(e.annotation) LIKE LOWER(:text) " +
-            "OR LOWER(e.description) LIKE LOWER(:text2) " +
-            "AND e.category.id IN (:categories) " +
-            "AND e.paid = :paid " +
-            "AND e.eventDate BETWEEN :rangeStart AND :rangeEnd")
-    Page<Event> findAllByCriteria(
-            @Param("text") String text,
-            @Param("text2") String text2,
-            @Param("categories") List<Integer> categories,
-            @Param("paid") Boolean paid,
-            @Param("rangeStart") LocalDateTime rangeStart,
-            @Param("rangeEnd") LocalDateTime rangeEnd,
+    Page<Event> findAllByAnnotationContainingIgnoreCaseOrDescriptionContainingIgnoreCaseAndCategory_IdInAndPaidIsAndEventDateBeforeAndEventDateAfter(
+            String text,
+            String text2,
+            List<Integer> categories,
+            Boolean paid,
+            LocalDateTime rangeStart,
+            LocalDateTime rangeEnd,
             Pageable pageable);
 
     Event findByIdAndInitiator_Id(Integer id, Integer initiatorId);
