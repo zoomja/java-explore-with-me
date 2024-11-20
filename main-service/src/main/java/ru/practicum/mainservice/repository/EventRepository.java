@@ -1,13 +1,10 @@
 package ru.practicum.mainservice.repository;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import ru.practicum.mainservice.model.Event;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import ru.practicum.mainservice.model.Event;
 import ru.practicum.mainservice.model.enums.State;
-
 
 import java.time.LocalDateTime;
 import java.util.List;
