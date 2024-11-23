@@ -201,6 +201,10 @@ public class EventService {
         statsClient.saveStatistic(requestDto);
     }
 
+    public Event getEventById(Integer eventId) {
+        return eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Event не найден"));
+    }
+
     private void checkEventTime(LocalDateTime eventTime) {
         if (LocalDateTime.now().plusHours(2).isAfter(eventTime))
             throw new CheckTimeException("Неправильно указана дата");
